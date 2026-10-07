@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ज्ञानी पंडित ए.आई.</title>
+<link href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Hindi&family=Mukta:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--kesar:#e8731a;--lal:#8c1c13;--gahra:#4a0e0a;--sone:#e5b53c;--dhoop:#fff4df;--ink:#3b1a10}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Mukta',sans-serif;color:var(--ink);min-height:100vh;
+background:radial-gradient(circle at 50% -10%,#ffd89a 0,transparent 55%),var(--dhoop)}
+h1,h2,h3{font-family:'Tiro Devanagari Hindi',serif;color:var(--lal);margin:.3em 0}
+.screen{display:none;max-width:760px;margin:0 auto;padding:16px}
+.screen.on{display:block}
+.hero{text-align:center;padding:20px 10px 8px;background:linear-gradient(180deg,var(--gahra),var(--lal));color:#fff;
+border-bottom:4px solid var(--sone);border-radius:0 0 50% 50%/0 0 28px 28px}
+.hero h1{color:var(--sone);font-size:2rem}.hero p{margin:0 0 14px;opacity:.9}
+.om{font-size:3rem;color:var(--sone);line-height:1;text-shadow:0 0 18px #ff9f1c}
+.card{background:#fff;border:1px solid #f0c98a;border-top:5px solid var(--kesar);border-radius:10px;padding:16px;margin:14px 0;box-shadow:0 4px 14px #8c1c1322}
+ol.tc{padding-left:20px;line-height:1.7}
+button{font:inherit;cursor:pointer;border:0;border-radius:8px;padding:11px 18px;font-weight:600}
+.yes{background:var(--kesar);color:#fff}.no{background:#fff;color:var(--lal);border:2px solid var(--lal)}
+.row{display:flex;gap:10px;flex-wrap:wrap}.row>button{flex:1}
+input,select{font:inherit;width:100%;padding:11px;margin:5px 0;border:1.5px solid #d9a45c;border-radius:8px;background:#fffaf0}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--lal);outline-offset:2px}
+.fb{background:#1877f2;color:#fff;width:100%;margin-top:8px}
+.top{display:flex;gap:8px;align-items:center;justify-content:space-between;padding:8px 0}
+.top select{width:auto}
+.tabs{display:flex;gap:6px;position:sticky;top:0;background:var(--dhoop);padding:6px 0;z-index:2}
+.tabs button{flex:1;background:#fff;color:var(--lal);border:1.5px solid var(--kesar)}
+.tabs button.on{background:var(--lal);color:var(--sone);border-color:var(--lal)}
+.pane{display:none}.pane.on{display:block}
+#log{height:52vh;overflow-y:auto;padding:6px}
+.m{max-width:88%;padding:10px 13px;border-radius:12px;margin:8px 0;white-space:pre-wrap;line-height:1.6}
+.u{background:var(--kesar);color:#fff;margin-left:auto;border-bottom-right-radius:2px}
+.b{background:#fff;border:1px solid #f0c98a;border-bottom-left-radius:2px}
+.sp{background:none;color:var(--lal);padding:4px 0 0;font-size:.9rem}
+.send{display:flex;gap:8px}.send input{margin:0}
+.mantra{border-left:5px solid var(--sone);padding-left:12px;margin:14px 0}
+.mantra .sl{font-family:'Tiro Devanagari Hindi',serif;font-size:1.25rem;color:var(--lal);line-height:1.7}
+.aarti pre{font-family:'Tiro Devanagari Hindi',serif;font-size:1.1rem;line-height:1.9;white-space:pre-wrap;margin:8px 0}
+details summary{cursor:pointer;font-family:'Tiro Devanagari Hindi',serif;font-size:1.25rem;color:var(--lal);padding:6px 0}
+.note{font-size:.85rem;opacity:.75}
+@media (prefers-reduced-motion:no-preference){.om{animation:glow 3s ease-in-out infinite alternate}}
+@keyframes glow{to{text-shadow:0 0 30px #ffb347}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="om" aria-hidden="true">ॐ</div>
+  <h1 id="t-title"></h1><p id="t-sub"></p>
+</header>
+
+<!-- 1. नियम व शर्तें -->
+<section id="s-terms" class="screen on">
+  <div class="card">
+    <h2 id="t-tcT"></h2>
+    <ol class="tc" id="t-tc"></ol>
+    <div class="row"><button class="yes" id="b-agree"></button><button class="no" id="b-dis"></button></div>
+  </div>
+  <div class="card" style="text-align:center">🪔 🔱 🪷 🕉️ 🪷 🔱 🪔</div>
+</section>
+
+<section id="s-declined" class="screen">
+  <div class="card"><h2 id="t-decT"></h2><p id="t-decP"></p><button class="yes" id="b-back"></button></div>
+</section>
+
+<!-- 2. लॉगिन -->
+<section id="s-login" class="screen">
+  <div class="top"><span></span><select class="langsel" aria-label="Language"></select></div>
+  <div class="card">
+    <h2 id="t-logT"></h2>
+    <input id="i-name" autocomplete="name">
+    <input id="i-email" type="email" autocomplete="email">
+    <input id="i-pass" type="password" autocomplete="current-password">
+    <div class="row"><button class="yes" id="b-in"></button><button class="no" id="b-reg"></button></div>
+    <p id="msg" role="alert" style="color:var(--lal)"></p>
+    <hr><button class="fb" id="b-fb"></button>
+  </div>
+</section>
+
+<!-- 3. मुख्य ऐप -->
+<section id="s-app" class="screen">
+  <div class="top"><b id="t-hello"></b>
+    <span class="row" style="flex:none"><select class="langsel" aria-label="Language"></select><button class="no" id="b-out"></button></span></div>
+  <div class="tabs" role="tablist">
+    <button data-p="chat" class="on" id="tb-chat"></button><button data-p="mantra" id="tb-mantra"></button><button data-p="aarti" id="tb-aarti"></button>
+  </div>
+
+  <div class="pane on" id="p-chat">
+    <div class="card"><div id="log" aria-live="polite"></div>
+      <div class="send"><input id="q" maxlength="800"><button class="yes" id="b-send"></button></div></div>
+  </div>
+  <div class="pane" id="p-mantra"><div class="card"><h2 id="t-mT"></h2><div id="mantras"></div></div></div>
+  <div class="pane" id="p-aarti"><div class="card"><h2 id="t-aT"></h2>
+    <p class="note" id="t-aN"></p><div id="aartis"></div></div></div>
+</section>
+
+<script>
+const LANGS={hi:'हिन्दी',en:'English',sa:'संस्कृतम्'};
+const I={
+hi:{title:'ज्ञानी पंडित ए.आई.',sub:'सनातन ज्ञान, मंत्र और आरती का पवित्र साथी',tcT:'सनातन सेवा के नियम व शर्तें',
+tc:['यह ऐप सनातन धर्म, वेद, पुराण, रामायण और गीता के ज्ञान के प्रसार हेतु है।','उत्तर श्रद्धा व शास्त्रों के आधार पर दिए जाते हैं; गहन धार्मिक निर्णयों हेतु योग्य गुरु/आचार्य से परामर्श लें।','किसी धर्म, जाति या व्यक्ति के प्रति अपमानजनक भाषा का प्रयोग वर्जित है।','यह ऐप चिकित्सा, कानूनी या वित्तीय सलाह का विकल्प नहीं है।','आपका ईमेल केवल लॉगिन के लिए उपयोग होगा, बेचा नहीं जाएगा।'],
+agree:'🙏 मैं सहमत हूँ',dis:'सहमत नहीं हूँ',decT:'क्षमा करें',decP:'शर्तें स्वीकार किए बिना ऐप का उपयोग संभव नहीं है। जब चाहें, वापस आकर सहमत हो सकते हैं।',back:'शर्तें फिर देखें',
+logT:'प्रवेश करें',name:'आपका नाम (नए खाते हेतु)',email:'ईमेल आईडी',pass:'पासवर्ड (कम से कम 6 अक्षर)',signin:'लॉगिन',reg:'नया खाता',fb:'फेसबुक से लॉगिन',
+hello:'नमस्ते',out:'बाहर',tChat:'💬 पंडित जी',tMantra:'🕉️ महामंत्र',tAarti:'🪔 आरती',ask:'अपना प्रश्न या उलझन लिखें…',send:'पूछें',speak:'🔊 सुनें',stop:'⏹ रोकें',
+mT:'महाज्ञान व महामंत्र',aT:'आरती संग्रह',aN:'"गाकर सुनाएँ" में फ़ोन की आवाज़ धीमी लय में आरती पढ़ती है; असली धुन के लिए public/audio में mp3 जोड़ सकते हैं।',sing:'🎵 गाकर सुनाएँ',
+wait:'पंडित जी विचार कर रहे हैं…',err:'कुछ गड़बड़ हुई, कृपया पुनः प्रयास करें।',bad:'ईमेल या पासवर्ड गलत है।',exists:'यह ईमेल पहले से पंजीकृत है।',inv:'सही ईमेल और 6+ अक्षर का पासवर्ड डालें।',nofb:'फेसबुक लॉगिन अभी सक्रिय नहीं है (सर्वर में FB_APP_ID जोड़ें)।',
+greet:'🙏 जय श्री राम! मैं ज्ञानी पंडित हूँ। गीता, वेद, पुराण या मंत्रों पर अपना प्रश्न पूछिए।'},
+en:{title:'Gyani Pandit AI',sub:'Your sacred companion for Sanatan wisdom, mantras and aartis',tcT:'Sanatan Seva – Terms & Conditions',
+tc:['This app exists to share the wisdom of Sanatan Dharma, the Vedas, Puranas, Ramayana and Gita.','Answers are based on faith and scripture; consult a qualified guru for serious religious decisions.','Disrespectful language toward any religion, caste or person is not allowed.','This app is not a substitute for medical, legal or financial advice.','Your email is used only for login and will never be sold.'],
+agree:'🙏 I Agree',dis:'I Do Not Agree',decT:'We are sorry',decP:'The app cannot be used without accepting the terms. You may return and agree whenever you wish.',back:'Review terms again',
+logT:'Sign in',name:'Your name (for a new account)',email:'Email ID',pass:'Password (min 6 characters)',signin:'Log in',reg:'Create account',fb:'Continue with Facebook',
+hello:'Namaste',out:'Log out',tChat:'💬 Pandit Ji',tMantra:'🕉️ Mantras',tAarti:'🪔 Aartis',ask:'Type your question or confusion…',send:'Ask',speak:'🔊 Listen',stop:'⏹ Stop',
+mT:'Mahagyan & Mahamantras',aT:'Aarti Collection',aN:'"Sing" makes your device voice read the aarti slowly in rhythm; add mp3 files in public/audio for real tunes.',sing:'🎵 Sing',
+wait:'Pandit Ji is reflecting…',err:'Something went wrong, please try again.',bad:'Wrong email or password.',exists:'This email is already registered.',inv:'Enter a valid email and a 6+ character password.',nofb:'Facebook login is not active yet (set FB_APP_ID on the server).',
+greet:'🙏 Jai Shri Ram! I am Gyani Pandit. Ask about the Gita, Vedas, Puranas or mantras.'},
+sa:{title:'ज्ञानी पण्डित ए.आई.',sub:'सनातनज्ञानस्य मन्त्राणाम् आरतीनां च पवित्रः सखा',tcT:'सनातनसेवायाः नियमाः',
+tc:['अयं प्रयोगः सनातनधर्मस्य वेदपुराणरामायणगीतानां ज्ञानप्रसारार्थम्।','उत्तराणि श्रद्धया शास्त्रैश्च आधारितानि; गम्भीरनिर्णयार्थं योग्यं गुरुं पृच्छतु।','कस्यापि धर्मस्य जनस्य वा अपमानः निषिद्धः।','अयं प्रयोगः चिकित्सा-विधि-वित्तपरामर्शस्य स्थानं न गृह्णाति।','भवतः ईमेल केवलं प्रवेशार्थम्, न विक्रीयते।'],
+agree:'🙏 अहं सम्मन्ये',dis:'न सम्मन्ये',decT:'क्षम्यताम्',decP:'नियमान् विना स्वीकृत्य प्रयोगः न शक्यते। इच्छानुसारं पुनः आगत्य सम्मन्येत।',back:'नियमान् पुनः पश्यतु',
+logT:'प्रविशतु',name:'भवतः नाम (नूतनखातार्थम्)',email:'ईमेल',pass:'गुप्तशब्दः (न्यूनतः ६ अक्षराणि)',signin:'प्रवेशः',reg:'नूतनं खातम्',fb:'फेसबुकद्वारा प्रवेशः',
+hello:'नमो नमः',out:'निर्गमः',tChat:'💬 पण्डितजी',tMantra:'🕉️ महामन्त्राः',tAarti:'🪔 आरत्यः',ask:'स्वप्रश्नं लिखतु…',send:'पृच्छतु',speak:'🔊 शृणोतु',stop:'⏹ विरम',
+mT:'महाज्ञानं महामन्त्राश्च',aT:'आरतीसङ्ग्रहः',aN:'"गायतु" इत्यनेन यन्त्रस्वरः मन्दलयेन आरतीं पठति; वास्तविकधुनार्थं public/audio मध्ये mp3 योजयतु।',sing:'🎵 गायतु',
+wait:'पण्डितजी चिन्तयति…',err:'किञ्चित् दोषः जातः, पुनः यतताम्।',bad:'ईमेल/गुप्तशब्दः असत्यः।',exists:'अयं ईमेल पूर्वमेव पञ्जीकृतः।',inv:'शुद्धं ईमेल ६+ अक्षरयुक्तं गुप्तशब्दं च लिखतु।',nofb:'फेसबुकप्रवेशः अद्य सक्रियः नास्ति।',
+greet:'🙏 जय श्रीराम! अहं ज्ञानी पण्डितः। गीता-वेद-पुराण-मन्त्रविषये पृच्छतु।'}
+};
+
+const MANTRAS=[
+{sl:'ॐ भूर्भुवः स्वः। तत्सवितुर्वरेण्यं। भर्गो देवस्य धीमहि। धियो यो नः प्रचोदयात्॥',n:{hi:'गायत्री महामंत्र',en:'Gayatri Mantra',sa:'गायत्रीमन्त्रः'},
+m:{hi:'हम उस तेजस्वी परमात्मा का ध्यान करते हैं, जो हमारी बुद्धि को सन्मार्ग पर प्रेरित करे। (ऋग्वेद 3.62.10)',en:'We meditate on the divine light of the Creator; may it inspire our intellect. (Rigveda 3.62.10)'}},
+{sl:'ॐ त्र्यम्बकं यजामहे सुगन्धिं पुष्टिवर्धनम्। उर्वारुकमिव बन्धनान्मृत्योर्मुक्षीय माऽमृतात्॥',n:{hi:'महामृत्युंजय मंत्र',en:'Mahamrityunjaya Mantra',sa:'महामृत्युञ्जयमन्त्रः'},
+m:{hi:'त्रिनेत्रधारी शिव का पूजन; पके फल की तरह हमें मृत्यु-बंधन से मुक्त करें। (ऋग्वेद 7.59.12)',en:'Worship of three-eyed Shiva; free us from the bond of death like a ripe fruit from its vine. (Rigveda 7.59.12)'}},
+{sl:'ॐ नमः शिवाय',n:{hi:'पंचाक्षर शिव मंत्र',en:'Panchakshari Shiva Mantra',sa:'पञ्चाक्षरमन्त्रः'},m:{hi:'कल्याणकारी शिव को नमन; मन की शांति व शरणागति का मंत्र।',en:'Salutation to auspicious Shiva; a mantra of peace and surrender.'}},
+{sl:'ॐ गं गणपतये नमः',n:{hi:'गणेश बीज मंत्र',en:'Ganesha Mantra',sa:'गणेशमन्त्रः'},m:{hi:'विघ्नहर्ता गणपति को नमन; कार्यारंभ में जपें।',en:'Salutation to Ganapati, remover of obstacles; chant before beginning any task.'}},
+{sl:'ॐ श्रीं महालक्ष्म्यै नमः',n:{hi:'लक्ष्मी मंत्र',en:'Lakshmi Mantra',sa:'लक्ष्मीमन्त्रः'},m:{hi:'धन, समृद्धि और सौभाग्य की देवी महालक्ष्मी को नमन।',en:'Salutation to Mahalakshmi, goddess of wealth and fortune.'}},
+{sl:'ॐ दुं दुर्गायै नमः',n:{hi:'दुर्गा बीज मंत्र',en:'Durga Mantra',sa:'दुर्गामन्त्रः'},m:{hi:'संकट-नाशिनी माँ दुर्गा को नमन; भय से रक्षा हेतु।',en:'Salutation to Maa Durga; for protection from fear.'}},
+{sl:'ॐ क्रीं कालिकायै नमः',n:{hi:'काली बीज मंत्र',en:'Kali Mantra',sa:'कालीमन्त्रः'},m:{hi:'काल व अज्ञान का नाश करने वाली माँ काली को नमन।',en:'Salutation to Maa Kali, destroyer of time-bound ignorance.'}},
+{sl:'ॐ नमो भगवते वासुदेवाय',n:{hi:'द्वादशाक्षर मंत्र (भागवत)',en:'Dvadashakshari Mantra (Bhagavata)',sa:'द्वादशाक्षरमन्त्रः'},m:{hi:'सर्वव्यापी भगवान वासुदेव (श्रीकृष्ण) को नमन।',en:'Salutation to Lord Vasudeva (Krishna), the all-pervading.'}},
+{sl:'हरे कृष्ण हरे कृष्ण कृष्ण कृष्ण हरे हरे। हरे राम हरे राम राम राम हरे हरे॥',n:{hi:'हरे कृष्ण महामंत्र',en:'Hare Krishna Mahamantra',sa:'हरेकृष्णमहामन्त्रः'},m:{hi:'भगवान के नाम का संकीर्तन; कलियुग में सरल साधन।',en:'Chanting of the Lord\'s names; a simple practice for Kali Yuga.'}},
+{sl:'कर्मण्येवाधिकारस्ते मा फलेषु कदाचन। मा कर्मफलहेतुर्भूर्मा ते सङ्गोऽस्त्वकर्मणि॥',n:{hi:'गीता 2.47 – कर्मयोग',en:'Gita 2.47 – Karma Yoga',sa:'गीता २.४७'},m:{hi:'अधिकार केवल कर्म में है, फल में नहीं; फल की आसक्ति और अकर्मण्यता दोनों छोड़ें।',en:'Your right is to action alone, not its fruits; abandon both attachment to results and inaction.'}}];
+
+const AARTIS=[
+{n:{hi:'शिव जी की आरती',en:'Shiv Ji Aarti',sa:'शिवआरती'},t:`ॐ जय शिव ओंकारा, स्वामी जय शिव ओंकारा।
+ब्रह्मा विष्णु सदाशिव, अर्द्धांगी धारा॥ ॐ हर हर हर महादेव॥
+एकानन चतुरानन पंचानन राजे।
+हंसासन गरुड़ासन वृषवाहन साजे॥
+दो भुज चार चतुर्भुज दसभुज अति सोहे।
+तीनों रूप निरखता त्रिभुवन जन मोहे॥
+अक्षमाला वनमाला मुण्डमाला धारी।
+त्रिपुरारी कंसारी कर माला धारी॥
+कर के मध्य कमण्डलु चक्र त्रिशूलधारी।
+सुखकारी दुखहारी जगपालन कारी॥
+ॐ जय शिव ओंकारा॥`},
+{n:{hi:'गणेश जी की आरती',en:'Ganesh Ji Aarti',sa:'गणेशआरती'},t:`जय गणेश जय गणेश जय गणेश देवा।
+माता जाकी पार्वती पिता महादेवा॥
+एकदन्त दयावन्त चार भुजाधारी।
+माथे सिन्दूर सोहे मूसे की सवारी॥
+अंधन को आँख देत कोढ़िन को काया।
+बाँझन को पुत्र देत निर्धन को माया॥
+हार चढ़े फूल चढ़े और चढ़े मेवा।
+लड्डुअन का भोग लगे सन्त करें सेवा॥
+दीनन की लाज राखो शम्भु सुतवारी।
+कामना को पूर्ण करो जाऊँ बलिहारी॥`},
+{n:{hi:'लक्ष्मी जी की आरती',en:'Lakshmi Ji Aarti',sa:'लक्ष्मीआरती'},t:`ॐ जय लक्ष्मी माता, मैया जय लक्ष्मी माता।
+तुमको निशदिन सेवत, हर विष्णु विधाता॥
+उमा रमा ब्रह्माणी, तुम ही जग माता।
+सूर्य चन्द्रमा ध्यावत, नारद ऋषि गाता॥
+दुर्गा रूप निरंजनी, सुख सम्पत्ति दाता।
+जो कोई तुमको ध्यावत, ऋद्धि सिद्धि धन पाता॥
+तुम पाताल निवासिनी, तुम ही शुभदाता।
+कर्म प्रभाव प्रकाशक, भवनिधि की त्राता॥
+ॐ जय लक्ष्मी माता॥`},
+{n:{hi:'पार्वती जी की आरती',en:'Parvati Ji Aarti',sa:'पार्वतीआरती'},t:`जय पार्वती माता, जय पार्वती माता।
+ब्रह्म सनातन देवी, शुभ फल की दाता॥
+अरिकुल पद्म विनासनी, जय सेवक त्राता।
+जग जीवन जगदम्बा, हरिहर गुण गाता॥
+सिंह को वाहन साजे, कुण्डल हैं साथा।
+देव वधू जहँ गावत, नृत्य करें थाता॥
+जय पार्वती माता, जय पार्वती माता॥`},
+{n:{hi:'माँ काली की आरती',en:'Maa Kali Aarti',sa:'कालीआरती'},t:`अम्बे तू है जगदम्बे काली, जय दुर्गे खप्पर वाली।
+तेरे ही गुण गायें भारती, ओ मैया हम सब उतारें तेरी आरती॥
+तेरे भक्त जनों पर माता, भीर पड़ी है भारी।
+दानव दल पर टूट पड़ो माँ, कर के सिंह सवारी॥
+सौ-सौ सिंहों से बलशाली, है अष्ट भुजाओं वाली।
+दुखियों के दुखड़े निवारती, ओ मैया हम सब उतारें तेरी आरती॥`},
+{n:{hi:'माँ दुर्गा की आरती',en:'Maa Durga Aarti',sa:'दुर्गाआरती'},t:`जय अम्बे गौरी, मैया जय श्यामा गौरी।
+तुमको निशदिन ध्यावत, हरि ब्रह्मा शिवरी॥ ॐ जय अम्बे गौरी॥
+माँग सिन्दूर विराजत, टीको मृगमद को।
+उज्ज्वल से दोउ नैना, चन्द्रवदन नीको॥
+कनक समान कलेवर, रक्ताम्बर राजे।
+रक्तपुष्प गलमाला, कण्ठन पर साजे॥
+केहरि वाहन राजत, खड्ग खप्पर धारी।
+सुर नर मुनिजन सेवत, तिनके दुखहारी॥
+शुम्भ निशुम्भ बिदारे, महिषासुर घाती।
+धूम्रविलोचन नैना, निशिदिन मदमाती॥`}];
+
+let lang=localStorage.lang||'hi', token=localStorage.token||'', uname=localStorage.uname||'';
+const $=id=>document.getElementById(id), T=k=>I[lang][k];
+const show=id=>{document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('on',s.id===id))};
+
+// ---------- वॉयस (Speech Synthesis) ----------
+function speak(text,rate=.9,pitch=1){
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text.replace(/[॥।«»]/g,', '));
+  u.lang=lang==='en'&&!/[\u0900-\u097F]/.test(text)?'en-IN':'hi-IN';
+  u.rate=rate;u.pitch=pitch;
+  const v=speechSynthesis.getVoices().find(x=>x.lang===u.lang);if(v)u.voice=v;
+  speechSynthesis.speak(u);
+}
+
+// ---------- भाषा ----------
+function render(){
+  document.documentElement.lang=lang==='en'?'en':'hi';
+  $('t-title').textContent=T('title');$('t-sub').textContent=T('sub');
+  $('t-tcT').textContent=T('tcT');$('t-tc').innerHTML=T('tc').map(x=>`<li>${x}</li>`).join('');
+  $('b-agree').textContent=T('agree');$('b-dis').textContent=T('dis');
+  $('t-decT').textContent=T('decT');$('t-decP').textContent=T('decP');$('b-back').textContent=T('back');
+  $('t-logT').textContent=T('logT');$('i-name').placeholder=T('name');$('i-email').placeholder=T('email');$('i-pass').placeholder=T('pass');
+  $('b-in').textContent=T('signin');$('b-reg').textContent=T('reg');$('b-fb').textContent='f  '+T('fb');
+  $('t-hello').textContent=T('hello')+(uname?', '+uname:'')+' 🙏';$('b-out').textContent=T('out');
+  $('tb-chat').textContent=T('tChat');$('tb-mantra').textContent=T('tMantra');$('tb-aarti').textContent=T('tAarti');
+  $('q').placeholder=T('ask');$('b-send').textContent=T('send');
+  $('t-mT').textContent=T('mT');$('t-aT').textContent=T('aT');$('t-aN').textContent=T('aN');
+  document.querySelectorAll('.langsel').forEach(s=>{s.innerHTML=Object.entries(LANGS).map(([k,v])=>`<option value="${k}"${k===lang?' selected':''}>${v}</option>`).join('')});
+  $('mantras').innerHTML=MANTRAS.map((m,i)=>`<div class="mantra"><h3>${m.n[lang]}</h3><div class="sl">${m.sl}</div><p>${m.m[lang]||m.m.hi}</p>
+    <button class="sp" onclick="speak(MANTRAS[${i}].sl,.75)">${T('speak')}</button> <button class="sp" onclick="speechSynthesis.cancel()">${T('stop')}</button></div>`).join('');
+  $('aartis').innerHTML=AARTIS.map((a,i)=>`<details class="aarti"><summary>${a.n[lang]}</summary><pre>${a.t}</pre>
+    <button class="yes" onclick="speak(AARTIS[${i}].t,.9)">${T('speak')}</button>
+    <button class="yes" onclick="speak(AARTIS[${i}].t,.68,1.15)">${T('sing')}</button>
+    <button class="no" onclick="speechSynthesis.cancel()">${T('stop')}</button></details>`).join('');
+  if(!$('log').children.length&&token)addMsg(T('greet'),'b');
+}
+document.querySelectorAll('.langsel').forEach(s=>s.onchange=e=>{lang=e.target.value;localStorage.lang=lang;$('log').innerHTML='';render()});
+
+// ---------- शर्तें ----------
+$('b-agree').onclick=()=>{localStorage.agreed='1';enter()};
+$('b-dis').onclick=()=>show('s-declined');
+$('b-back').onclick=()=>show('s-terms');
+function enter(){show(token?'s-app':localStorage.agreed?'s-login':'s-terms')}
+
+// ---------- लॉगिन ----------
+async function authCall(url,body){
+  $('msg').textContent='';
+  try{
+    const r=await fetch(url,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)});
+    const d=await r.json();
+    if(!r.ok){$('msg').textContent=T(d.error==='exists'?'exists':d.error==='invalid'?'inv':'bad');return}
+    token=d.token;uname=d.name||'';localStorage.token=token;localStorage.uname=uname;$('log').innerHTML='';render();enter();
+  }catch{$('msg').textContent=T('err')}
+}
+$('b-in').onclick=()=>authCall('/api/login',{email:$('i-email').value,password:$('i-pass').value});
+$('b-reg').onclick=()=>authCall('/api/register',{name:$('i-name').value,email:$('i-email').value,password:$('i-pass').value});
+$('b-out').onclick=()=>{localStorage.removeItem('token');localStorage.removeItem('uname');token='';speechSynthesis.cancel();enter()};
+
+let fbReady=false;
+fetch('/api/config').then(r=>r.json()).then(c=>{
+  if(!c.fbAppId)return;
+  window.fbAsyncInit=()=>{FB.init({appId:c.fbAppId,version:'v19.0',cookie:true});fbReady=true};
+  const s=document.createElement('script');s.src='https://connect.facebook.net/en_US/sdk.js';s.async=true;document.head.appendChild(s);
+});
+$('b-fb').onclick=()=>{
+  if(!fbReady){$('msg').textContent=T('nofb');return}
+  FB.login(r=>{if(r.authResponse)authCall('/api/facebook',{accessToken:r.authResponse.accessToken})},{scope:'public_profile,email'});
+};
+
+// ---------- टैब व चैट ----------
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('on',x===b));
+  document.querySelectorAll('.pane').forEach(p=>p.classList.toggle('on',p.id==='p-'+b.dataset.p));
+});
+function addMsg(text,cls){
+  const d=document.createElement('div');d.className='m '+cls;d.textContent=text;
+  if(cls==='b'){const s=document.createElement('button');s.className='sp';s.textContent=T('speak');s.onclick=()=>speak(text);d.append(document.createElement('br'),s)}
+  $('log').appendChild(d);$('log').scrollTop=1e9;return d;
+}
+async function ask(){
+  const q=$('q').value.trim();if(!q)return;$('q').value='';addMsg(q,'u');
+  const w=addMsg(T('wait'),'b');
+  try{
+    const r=await fetch('/api/chat',{method:'POST',headers:{'content-type':'application/json',Authorization:'Bearer '+token},body:JSON.stringify({q,lang})});
+    if(r.status===401){$('b-out').click();return}
+    const d=await r.json();w.remove();addMsg(d.a,'b');
+  }catch{w.remove();addMsg(T('err'),'b')}
+}
+$('b-send').onclick=ask;$('q').onkeydown=e=>{if(e.key==='Enter')ask()};
+
+render();enter();
+</script>
+</body>
+</html>
